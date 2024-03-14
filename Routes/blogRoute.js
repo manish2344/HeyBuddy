@@ -75,7 +75,6 @@ async (req, res) => {
       const comment = {
         comment: req.body.comment,
         userId: req.body.user.id,
-        userName: req.body.name,
         createdAt: Date.now(),
         commentId: uuid(),
       };

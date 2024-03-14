@@ -16,17 +16,8 @@ const BlogSchema = new mongoose.Schema({
         required: true,
         min: 12,
     },
-    // photo: {
-    //     type: String,
-    //     required: true,
-    // },
-      avatar: {
-    type: String,
-  },
-  cloudinary_id: {
-    type: String,
-  }, 
-    category: {
+
+category: {
         type: String,
         required: true,
     },

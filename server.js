@@ -4,7 +4,7 @@ const cors = require("cors");
 require('./connection.js')
 const mongoose = require("mongoose");
 const userRoute = require("./Routes/userRoute");
-const blogRouter = require("./Controllers/blogController.js");
+const blogRouter = require("./Routes/blogRoute.js");
 const cookieParser = require('cookie-parser');
 const app = express();
 

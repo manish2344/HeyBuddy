@@ -1,8 +1,7 @@
 const blogController = require("express").Router()
 const Blog = require("../Schema/Blog.js")
-const verifyToken = require('../middleware/auth')
-const cloudinary = require("./cloudinary");
-const upload = require("./multer");
+const verifyToken = require('../middleware/auth.js')
+
 blogController.get('/getAll', async (req, res) => {
     try {
         // const blogs = await Blog.find({})
@@ -12,20 +11,18 @@ blogController.get('/getAll', async (req, res) => {
         return res.status(500).json(error)
     }
 })
-blogController.post("/create", upload.single("image"),
+blogController.post("/create", 
 verifyToken, 
 async (req, res) => {
     try {
-      const result = await cloudinary.uploader.upload(req.file.path);
-      let user = new Blog({
+         let user = new Blog({
         title: req.body.title,
         desc: req.body.desc,
         category: req.body.category,
-        avatar: result.secure_url,
-        cloudinary_id: result.public_id,
+        
         userId:req.user.id
       });
-      // Save user
+      
       await user.save();
       res.json(user);
     } catch (err) {
@@ -34,8 +31,7 @@ async (req, res) => {
   });
 blogController.get('/find/:id', async (req, res) => {
     try {
-        // const blog = await Blog.findById(req.params.id);
-        const blog = await Blog.findById(req.params.id).populate("userId", '-password')
+          const blog = await Blog.findById(req.params.id).populate("userId", '-password')
         blog.views += 1
         await blog.save()
         return res.status(200).json(blog)
@@ -63,25 +59,6 @@ blogController.post('/',
         return res.status(500).json(error.message)
     }
 })
-
-
-
-// blogController.put("/updateBlog/:id", verifyToken, async (req, res) => {
-//     try {
-//         const blog = await Blog.findById(req.params.id)
-//         if (blog.userId.toString() !== req.user.id.toString()) {
-//             throw new Error("You can update only your own posts")
-//         }
-
-//         const updatedBlog = await Blog
-//             .findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true })
-//             .populate('userId', '-password')
-
-//         return res.status(200).json(updatedBlog)
-//     } catch (error) {
-//         return res.status(500).json(error.message)
-//     }
-// })
 
 blogController.put('/likeBlog/:id', verifyToken, async (req, res) => {
     try {
@@ -120,15 +97,7 @@ blogController.put("/updateBlog/:id", verifyToken, async (req, res) => {
     }
 })
 
-// blogController.put('/updateBlog/:id',verifyToken, async (req, res) =>{
-//   const { id } = req.params;
-//   try {
-//     const user = await Blog.findByIdAndUpdate(id, req.body, { new: true });
-//     res.status(200).json(user);
-//   } catch (err) {
-//     res.status(400).json(err);
-//   }
-// })
+
 
 blogController.delete('/deleteBlog/:id', verifyToken, async(req, res) => {
     try {

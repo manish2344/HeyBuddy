@@ -25,6 +25,10 @@ category: {
         type: Boolean,
         default: false,
     },
+    tags: {
+        type: Array,
+        // required: true,
+      },
     views: {
         type: Number,
         default: 0

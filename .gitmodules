@@ -1,0 +1,3 @@
+[submodule "blog-client"]
+	path = blog-client
+	url = https://github.com/manish2344/blog-client.git

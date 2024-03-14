@@ -15,28 +15,27 @@ blogController.get('/getAll', async (req, res) => {
 blogController.post("/create", 
 verifyToken, 
 async (req, res) => {
-    const { tags } = req.body;
-
-    const tag = await tags.map((e) => {
-      return {
-        name: e.trim(),
-      };
-    });
     try {
-         let user = new Blog({
-        title: req.body.title,
+        const { tags } = req.body;
+  
+        const tag = await tags.map((e) => {
+          return {
+            name: e.trim(),
+          };
+        });
+        const Ques = new Blog({
+            title: req.body.title,
         desc: req.body.desc,
         category: req.body.category,
         userId:req.user.id,
-        tags: tags.map(e => e.replace(/\s+/g, ''))
-      });
-      
-      await user.save();
-      await tagSchema.insertMany(tag, { ordered: false });
-      res.json(user);
-    } catch (err) {
-      console.log(err);
-    }
+          tags: tags.map(e => e.replace(/\s+/g, '')),
+        });
+        res.json({ status: true });
+        Ques.save();
+        await tagSchema.insertMany(tag, { ordered: false });
+      } catch (error) {}
+
+
   });
 
   blogController.get("/tags",  async (req, res) => {
